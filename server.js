@@ -8,7 +8,10 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
+const bootcamps = require('./routes/bootcamp');
+
 app.use(morgan('dev'));
+app.use('api/v1/bootcamp', bootcamps);
 
 app.get('/', (req, res) => {
   res.status(200).send('<H1>Hello from Express</H1>');
