@@ -1,12 +1,8 @@
 const express = require('express');
+const { getBootcamps } = require('../controllers/bootcamp');
+
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: 'This gets all the bootcamps',
-  });
-});
-
+router.route('/').get(getBootcamps);
 
 module.exports = router;
