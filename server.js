@@ -10,8 +10,10 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
+if (NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
 
-app.use(morgan('dev'));
 app.use('/api/v1/bootcamps', bootcamps);
 
 app.get('/', (req, res) => {
