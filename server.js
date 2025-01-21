@@ -23,6 +23,12 @@ app.get('/', (req, res) => {
   res.status(200).send('<H1>Hello from Express</H1>');
 });
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`App running in ${NODE_ENV} mode at http://127.0.0.1:${PORT}`);
 });
+
+process.on('unhandledRejection', (err, promise) => {
+  console.log(`Error: ${err.message}`);
+
+  server.close(() => process.exit(1));
+})
