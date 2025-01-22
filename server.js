@@ -14,6 +14,9 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
+// body parser
+app.use(express.json());
+
 if (NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
@@ -25,11 +28,13 @@ app.get('/', (req, res) => {
 });
 
 const server = app.listen(PORT, () => {
-  console.log(`App running in ${NODE_ENV} mode at http://127.0.0.1:${PORT}`.yellow.bold);
+  console.log(
+    `App running in ${NODE_ENV} mode at http://127.0.0.1:${PORT}`.yellow.bold
+  );
 });
 
 process.on('unhandledRejection', (err, promise) => {
   console.log(`Error: ${err.message}`.red);
 
   server.close(() => process.exit(1));
-})
+});
