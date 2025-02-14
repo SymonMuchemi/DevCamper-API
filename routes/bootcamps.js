@@ -13,6 +13,7 @@ const courseRouter = require('./courses');
 
 const router = express.Router();
 
+// reroute to course router
 router.use('/:bootcampId/courses', courseRouter);
 
 router.route('/radius/:zipcode/:distance').get(getBootcampsInRadius);
