@@ -8,6 +8,7 @@ dotenv.config({ path: './config/config.env' });
 
 // Load models
 const Bootcamp = require('./models/Bootcamp');
+const Course = require('./models/Courses');
 
 // Connect to DB
 mongoose.connect(process.env.MONGO_URI);
@@ -17,13 +18,20 @@ const bootcamps = JSON.parse(
   fs.readFileSync(`${__dirname}/_data/bootcamps.json`, 'utf-8')
 );
 
+const courses = JSON.parse(
+  fs.readFileSync(`${__dirname}/_data/courses.json`, 'utf-8')
+);
+
 // import data to database
 const importData = async () => {
   try {
-    console.log('Import bootcamps...'.yellow);
+    console.log('Importing bootcamps...'.yellow);
     await Bootcamp.create(bootcamps);
 
-    console.log('Data imported...'.green.inverse);
+    console.log('Importing courses...'.yellow);
+    await Course.create(courses);
+
+    console.log('Course and Bootcamps data imported...'.green.inverse);
 
     process.exit();
   } catch (error) {
@@ -35,6 +43,7 @@ const importData = async () => {
 const deleteData = async () => {
   try {
     await Bootcamp.deleteMany();
+    await Course.deleteMany();
 
     console.log('Data Destroyed...'.red.inverse);
     process.exit();
@@ -51,6 +60,8 @@ if (process.argv[2] === importCommand) {
 } else if (process.argv[2] === deleteCommand) {
   deleteData();
 } else {
-  console.log('Usage: node seeder -i | --import to import data, -d | --delete to delete data');
+  console.log(
+    'Usage: node seeder -i | --import to import data, -d | --delete to delete data'
+  );
   process.exit();
 }
