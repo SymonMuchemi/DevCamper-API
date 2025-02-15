@@ -11,6 +11,7 @@ const errorHandler = require('./middleware/error');
 // import routers
 const bootcamps = require('./routes/bootcamps');
 const courses = require('./routes/courses');
+const auth = require('./routes/auth');
 
 dotenv.config({ path: './config/config.env' });
 
@@ -35,6 +36,7 @@ app.use(fileupload());
 
 app.use('/api/v1/bootcamps', bootcamps);
 app.use('/api/v1/courses', courses);
+app.use('/api/v1/auth', auth);
 
 app.use(errorHandler);
 
