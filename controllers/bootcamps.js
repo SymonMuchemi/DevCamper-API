@@ -134,7 +134,7 @@ exports.uploadBootcampPhoto = asyncHandler(async (req, res, next) => {
   const file = req.files.file;
 
   // check file size
-  if (file.size > MAX_FILE_UPLOAD_SIZE) {
+  if (file.size > MAX_FILE_UPLOAD) {
     return next(
       new ErrorResponse(
         `Please upload an image less than ${process.env.MAX_FILE_UPLOAD}`,
