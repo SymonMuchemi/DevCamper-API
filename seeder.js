@@ -29,7 +29,7 @@ const importData = async () => {
     await Bootcamp.create(bootcamps);
 
     console.log('Importing courses...'.yellow);
-    await Course.create(courses);
+    await Course.insertManyWithHook(courses);
 
     console.log('Course and Bootcamps data imported...'.green.inverse);
 
