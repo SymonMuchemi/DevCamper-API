@@ -133,6 +133,16 @@ exports.uploadBootcampPhoto = asyncHandler(async (req, res, next) => {
 
   const file = req.files.file;
 
+  // check file size
+  if (file.size > MAX_FILE_UPLOAD_SIZE) {
+    return next(
+      new ErrorResponse(
+        `Please upload an image less than ${process.env.MAX_FILE_UPLOAD}`,
+        400
+      )
+    );
+  }
+
   // make sure the file is an image
   if (!file.mimetype.startsWith('image')) {
     return next(new ErrorResponse('please upload and image file', 400));
