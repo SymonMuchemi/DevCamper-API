@@ -29,7 +29,9 @@ router
   .get(advancedResults(Bootcamp, 'courses'), getBootcamps)
   .post(protect, authorize('publisher', 'admin'), createBootcamp);
 
-router.route('/:id/photo').put(uploadBootcampPhoto);
+router
+  .route('/:id/photo')
+  .put(protect, authorize('publisher', 'admin'), uploadBootcampPhoto);
 
 router
   .route('/:id')
