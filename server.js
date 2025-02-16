@@ -2,10 +2,11 @@ const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const fileupload = require('express-fileupload');
+const colors = require('colors');
 const path = require('path');
+const cookieParser = require('cookie-parser');
 
 const connectDB = require('./config/db');
-const colors = require('colors');
 const errorHandler = require('./middleware/error');
 
 // import routers
@@ -23,6 +24,9 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 
 // body parser
 app.use(express.json());
+
+// add cookie parser
+app.use(cookieParser());
 
 // set static folder
 app.use(express.static(path.join(__dirname, 'public')));
