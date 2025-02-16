@@ -16,7 +16,7 @@ exports.getCourses = asyncHandler(async (req, res, next) => {
 exports.getCourse = asyncHandler(async (req, res, next) => {
   const course = await Course.findById(req.params.id).populate({
     path: 'bootcamp',
-    select: 'name description',
+    select: 'name description user',
   });
 
   if (!course) {
@@ -61,7 +61,10 @@ exports.addCourse = asyncHandler(async (req, res, next) => {
 // @route   PUT /api/v1/courses/:id
 // @access  Private
 exports.updateCourse = asyncHandler(async (req, res, next) => {
-  let course = await Course.findById(req.params.id);
+  let course = await Course.findById(req.params.id).populate({
+    path: 'bootcamp',
+    select: 'user',
+  });
 
   if (!course) {
     return next(
@@ -69,6 +72,16 @@ exports.updateCourse = asyncHandler(async (req, res, next) => {
         `Cound not find course with id: ${req.params.bootcampId}`
       ),
       404
+    );
+  }
+
+  // only course owner or admin can update the bootcamp
+  if (
+    course.bootcamp.user.toString() !== req.user.id &&
+    req.user.role !== 'admin'
+  ) {
+    return next(
+      new ErrorResponse(`User is unauthorized to update this bootcamp`, 403)
     );
   }
 
