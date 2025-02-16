@@ -34,3 +34,12 @@ exports.protect = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse('Unauthorized access', 401));
   }
 });
+
+exports.authorize = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return next(new ErrorResponse('Unauthorized access', 403));
+    }
+    next();
+  };
+};
