@@ -11,8 +11,10 @@ const Bootcamp = require('./models/Bootcamp');
 const Course = require('./models/Course');
 const User = require('./models/User');
 
-// Connect to DB
-mongoose.connect(process.env.MONGO_URI);
+// Connect to DB with increased timeout
+mongoose.connect(process.env.MONGO_URI, {
+  serverSelectionTimeoutMS: 30000, // Increase timeout to 30 seconds
+});
 
 // Read JSON files
 const bootcamps = JSON.parse(
@@ -50,14 +52,15 @@ const importData = async () => {
 // delete data
 const deleteData = async () => {
   try {
-    await Bootcamp.deleteMany();
     await Course.deleteMany();
+    await Bootcamp.deleteMany();
     await User.deleteMany();
 
     console.log('🛑 Data Destroyed'.red);
     process.exit();
   } catch (error) {
     console.error(error);
+    process.exit(1);
   }
 };
 
