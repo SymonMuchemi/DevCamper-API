@@ -36,7 +36,20 @@ exports.getCourse = asyncHandler(async (req, res, next) => {
 // @route   Post /api/v1/bootcamps/:bootcampId/courses
 // @access  Private
 exports.addCourse = asyncHandler(async (req, res, next) => {
+  req.body.user = req.user.id;
+  req.body.bootcamp = req.params.bootcampId;
+
   const bootcamp = await Bootcamp.findById(req.params.bootcampId);
+
+  // only bootcamp owner or admin can create a course
+  if (bootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
+    return next(
+      new ErrorResponse(
+        `User is not authorized to add a course to bootcamp ${bootcamp.id}`,
+        403
+      )
+    );
+  }
 
   if (!bootcamp) {
     return next(
@@ -75,11 +88,8 @@ exports.updateCourse = asyncHandler(async (req, res, next) => {
     );
   }
 
-  // only course owner or admin can update the bootcamp
-  if (
-    course.bootcamp.user.toString() !== req.user.id &&
-    req.user.role !== 'admin'
-  ) {
+  // only course owner or admin can update the course
+  if (course.user.toString() !== req.user.id && req.user.role !== 'admin') {
     return next(
       new ErrorResponse(`User is unauthorized to update this bootcamp`, 403)
     );
@@ -101,6 +111,13 @@ exports.updateCourse = asyncHandler(async (req, res, next) => {
 // @access  Private
 exports.deleteCourse = asyncHandler(async (req, res, next) => {
   let course = await Course.findById(req.params.id);
+
+  // only course owner or admin can delete the course
+  if (course.user.toString() !== req.user.id && req.user.role !== 'admin') {
+    return next(
+      new ErrorResponse(`User is unauthorized to update this bootcamp`, 403)
+    );
+  }
 
   if (!course) {
     return next(

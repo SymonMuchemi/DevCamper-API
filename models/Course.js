@@ -35,6 +35,10 @@ const CourseSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: 'Bootcamp',
   },
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+  },
 });
 
 // static method to get average course cost for a bootcamp
@@ -52,9 +56,8 @@ CourseSchema.statics.getAverageCost = async function (bootcampId) {
   ]);
 
   try {
-
-    if (aggregationObj.length === 0 ) {
-      console.log('No aggregation object created!'.red.bgBlue)
+    if (aggregationObj.length === 0) {
+      console.log('No aggregation object created!'.red.bgBlue);
     }
     const Bootcamp = mongoose.model('Bootcamp');
     const updatedBootcamp = await Bootcamp.findByIdAndUpdate(
@@ -83,15 +86,15 @@ CourseSchema.statics.insertManyWithHook = async function (docs) {
   const courses = await this.insertMany(docs);
 
   // extract the unique bootcamp IDs from inserted courses
-  const bootcampIds = [...new Set(courses.map(course => course.bootcamp))]
+  const bootcampIds = [...new Set(courses.map((course) => course.bootcamp))];
 
   // recalculate average cost for each bootcamp
   for (const bootcampId of bootcampIds) {
-    await this.getAverageCost(bootcampId)
+    await this.getAverageCost(bootcampId);
   }
 
   return courses;
-}
+};
 
 // call getAverage after save
 CourseSchema.post('save', async function () {
