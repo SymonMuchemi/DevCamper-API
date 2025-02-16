@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
 const geocoder = require('../utils/geocoder');
-const Course = require('./Courses');
+const Course = require('./Course');
 
 const bootcampSchema = new mongoose.Schema(
   {
@@ -134,9 +134,9 @@ bootcampSchema.pre(
   { document: true, query: false },
   async function (next) {
     console.log(`Removing courses from ${this.name} bootcamp`);
-    
+
     await Course.deleteMany({ bootcamp: this._id });
-    
+
     next();
   }
 );

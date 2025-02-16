@@ -1,6 +1,6 @@
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
-const Course = require('../models/Courses');
+const Course = require('../models/Course');
 const Bootcamp = require('../models/Bootcamp');
 
 // @desc    gets all courses
@@ -40,7 +40,9 @@ exports.addCourse = asyncHandler(async (req, res, next) => {
 
   if (!bootcamp) {
     return next(
-      new ErrorResponse(`Cound not find bootcamp with id: ${req.params.bootcampId}`),
+      new ErrorResponse(
+        `Cound not find bootcamp with id: ${req.params.bootcampId}`
+      ),
       404
     );
   }
@@ -63,14 +65,16 @@ exports.updateCourse = asyncHandler(async (req, res, next) => {
 
   if (!course) {
     return next(
-      new ErrorResponse(`Cound not find course with id: ${req.params.bootcampId}`),
+      new ErrorResponse(
+        `Cound not find course with id: ${req.params.bootcampId}`
+      ),
       404
     );
   }
 
   course = await Course.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
-    runValidators: true
+    runValidators: true,
   });
 
   res.status(200).json({
