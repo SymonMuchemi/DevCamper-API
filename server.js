@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser');
 
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/error');
+const { redisClient } = require('./utils/redis');
 
 // import routers
 const bootcamps = require('./routes/bootcamps');
@@ -15,6 +16,16 @@ const courses = require('./routes/courses');
 const auth = require('./routes/auth');
 
 dotenv.config({ path: './config/config.env' });
+
+(async () => {
+  await redisClient.connect();
+})();
+
+redisClient.on('ready', () => {
+  console.log(`Connected to redis successfully!`.green.inverse);
+});
+
+redisClient.on('error', (err) => console.log('Redis Client Error', err));
 
 connectDB();
 
