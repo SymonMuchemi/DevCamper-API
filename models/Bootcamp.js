@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const slugify = require('slugify');
 const geocoder = require('../utils/geocoder');
 const Course = require('./Course');
+const redisClient = require('../utils/redisClient');
+const ErrorResponse = require('../utils/errorResponse');
 
 const bootcampSchema = new mongoose.Schema(
   {
@@ -131,6 +133,43 @@ bootcampSchema.pre('save', async function (next) {
 
   this.address = undefined;
   next();
+});
+
+bootcampSchema.pre('findOne', async function (next) {
+  // check cache
+  try {
+    const queryCondition = this.getQuery();
+    const bootcampId = queryCondition._id;
+
+    console.log(`Checking cache for bootcamp with id: ${bootcampId}`.cyan);
+    let cachedBootcamp = await redisClient.get(bootcampId);
+
+    if (cachedBootcamp) {
+      console.log('Data return from cache!'.cyan.inverse);
+      return cachedBootcamp;
+    }
+    next();
+  } catch (err) {
+    next(new ErrorResponse(`findOne Error: ${err.message}`));
+  }
+});
+
+bootcampSchema.post('findOne', async function (doc) {
+  if (!doc) return;
+  try {
+    let cachedBootcamp = await redisClient.get(doc._id.toString());
+
+    if (!cachedBootcamp) {
+      cachedBootcamp = await redisClient.set(
+        doc._id.toString(),
+        JSON.stringify(doc)
+      );
+
+      console.log(`Data cached`.cyan.inverse);
+    }
+  } catch (err) {
+    console.error('Redis caching error: ', err.message);
+  }
 });
 
 bootcampSchema.pre(
