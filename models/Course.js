@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const redisClient = require('../utils/redisClient');
 
 const CourseSchema = new mongoose.Schema({
   title: {
@@ -109,5 +110,42 @@ CourseSchema.post(
     await this.constructor.getAverageCost(this.bootcamp);
   }
 );
+
+CourseSchema.pre('findOne', async function (next) {
+  try {
+    const queryCondition = this.getQuery();
+    const courseId = queryCondition._id;
+
+    let cachedCourse = await redisClient.get(courseId);
+
+    if (cachedCourse) {
+      console.log('Course saved in cache');
+      return cachedCourse;
+    } else {
+      console.log('Searching the database for the course....');
+      next();
+    }
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
+CourseSchema.post('findOne', async function (doc) {
+  if (!doc) return;
+
+  try {
+    let storedCourse = await redisClient.get(doc._id.toString());
+
+    if (!storedCourse) {
+      storedCourse = await redisClient.set(
+        doc._id.toString(),
+        JSON.stringify(doc)
+      );
+      console.log('Course stored in cache');
+    }
+  } catch (error) {
+    console.error(error.message);
+  }
+});
 
 module.exports = mongoose.model('Course', CourseSchema);
