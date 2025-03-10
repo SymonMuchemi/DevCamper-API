@@ -1,5 +1,7 @@
 const { createClient } = require('redis');
 
+const STREAMNAME = 'devcamper:mail'
+
 class RedisClient {
   constructor() {
     this.client = createClient();
@@ -26,6 +28,14 @@ class RedisClient {
 
   async del(key) {
     return this.client.del(key);
+  }
+
+  async writeToMailStream(address, subject, body) {
+    return this.client.XADD(STREAMNAME, '*', {
+      email: address,
+      subject: subject,
+      body: body,
+    });
   }
 }
 
