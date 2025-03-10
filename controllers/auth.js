@@ -1,6 +1,7 @@
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const User = require('../models/User');
+const redisClient = require('../utils/redisClient');
 
 // @desc    register a new user
 // @route   POST /api/v1/auth/register
@@ -73,7 +74,7 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
 
   if (!user) {
     return next(
-      new ErrorResponse(`No user found with id: ${req.body.email}`, 404)
+      new ErrorResponse(`No user found with email: ${req.body.email}`, 404)
     );
   }
 
@@ -81,10 +82,29 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
 
   await user.save({ validateBeforeSave: false });
 
-  res.status(200).json({
-    success: true,
-    data: user,
-  });
+  // create reset url
+  const resetUrl = `${req.protocol}://${req.get(
+    'host'
+  )}/api/v1/resetpassword/${resetToken}`;
+
+  const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to: \n\n ${resetUrl}`;
+
+  try {
+    await redisClient.writeToMailStream(
+      user.email,
+      'Password Reset Token',
+      message
+    );
+    res.status(200).json({ success: true, data: 'Email queued' });
+  } catch (error) {
+    console.error(error);
+
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+
+    await user.save({ validateBeforeSave: false });
+    return next(new ErrorResponse(`Error writing to mail stream`, 500));
+  }
 });
 
 // generate token and set cookie
