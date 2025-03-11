@@ -68,8 +68,8 @@ exports.getMe = asyncHandler(async (req, res, next) => {
   });
 });
 
-// @desc    get currect logged in user
-// @route   GET /api/v1/auth/resetpassword/:resettoken
+// @desc    reset user pasword
+// @route   PUT /api/v1/auth/resetpassword/:resettoken
 // @access  Public
 exports.resetpassword = asyncHandler(async (req, res, next) => {
   // get hashed token
