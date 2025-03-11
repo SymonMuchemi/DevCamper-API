@@ -68,6 +68,24 @@ exports.getMe = asyncHandler(async (req, res, next) => {
   });
 });
 
+// @desc    update user password
+// @route   PUT /api/v1/auth/updatepassword
+// @access  Private
+exports.updatePassword = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.user.id).select('+password');
+
+  if (!(await user.matchPassword(req.body.currentPassword))) {
+	return next(new ErrorResponse('Invalid password', 400));
+  }
+  console.log('Password match');
+  user.password = req.body.newPassword;
+
+  await user.save();
+  console.log(`User saved, password modified: ${user.isModified('password')}`);
+  sendTokenResponse(user, 200, res);
+});
+
+
 // @desc    update user details
 // @route   PUT /api/v1/auth/updatedetails
 // @access  Private
