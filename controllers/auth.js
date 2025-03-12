@@ -77,11 +77,9 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
   if (!(await user.matchPassword(req.body.currentPassword))) {
 	return next(new ErrorResponse('Invalid password', 400));
   }
-  console.log('Password match');
   user.password = req.body.newPassword;
 
   await user.save();
-  console.log(`User saved, password modified: ${user.isModified('password')}`);
   sendTokenResponse(user, 200, res);
 });
 
