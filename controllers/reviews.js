@@ -9,7 +9,7 @@ const Bootcamp = require('../models/Bootcamp');
 // @access  Public
 exports.getReviews = asyncHandler(async (req, res, next) => {
   if (req.params.bootcampId) {
-    const reviews = await Review.find({ bootcamp: req.params.boocampId });
+    const reviews = await Review.find({ bootcamp: req.params.bootcampId });
 
     return res.status(200).json({
       success: true,
@@ -26,7 +26,7 @@ exports.getReviews = asyncHandler(async (req, res, next) => {
 // @access  Public
 exports.getReview = asyncHandler(async (req, res, next) => {
   const review = await Review.findById(req.params.id).populate({
-    path: 'Bootcamp',
+    path: 'bootcamp',
     select: 'name description',
   });
 
