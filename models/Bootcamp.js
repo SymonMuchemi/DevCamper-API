@@ -136,7 +136,6 @@ bootcampSchema.pre('save', async function (next) {
 });
 
 bootcampSchema.pre('findOne', async function (next) {
-  // check cache
   try {
     const queryCondition = this.getQuery();
     const bootcampId = queryCondition._id;
