@@ -141,11 +141,9 @@ bootcampSchema.pre('findOne', async function (next) {
     const queryCondition = this.getQuery();
     const bootcampId = queryCondition._id;
 
-    console.log(`Checking cache for bootcamp with id: ${bootcampId}`.cyan);
     let cachedBootcamp = await redisClient.get(bootcampId);
 
     if (cachedBootcamp) {
-      console.log('Data return from cache!'.cyan.inverse);
       return cachedBootcamp;
     }
     next();
@@ -164,8 +162,6 @@ bootcampSchema.post('findOne', async function (doc) {
         doc._id.toString(),
         JSON.stringify(doc)
       );
-
-      console.log(`Data cached`.cyan.inverse);
     }
   } catch (err) {
     console.error('Redis caching error: ', err.message);
@@ -176,8 +172,6 @@ bootcampSchema.pre(
   'deleteOne',
   { document: true, query: false },
   async function (next) {
-    console.log(`Removing courses from ${this.name} bootcamp`);
-
     await Course.deleteMany({ bootcamp: this._id });
 
     next();
