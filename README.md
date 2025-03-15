@@ -34,6 +34,13 @@ node seeder -d
 node seeder -i
 ```
 
+## API Documentation
+
+- Postman published documentation: [https://documenter.getpostman.com/view/33408943/2sAYkBsghW](https://documenter.getpostman.com/view/33408943/2sAYkBsghW)
+- Local documentation: [http://localhost:3001/](http://localhost:3001/)
+
+## Version Info
+
 - Version: 1.0.0
 - License: MIT
 - Author: Simon Muchemi
