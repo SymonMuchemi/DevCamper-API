@@ -1,0 +1,1378 @@
+{
+	"info": {
+		"_postman_id": "b74a91ad-1c42-479d-98e5-8218b5ea9537",
+		"name": "DevCamper API",
+		"description": "A developer camper backend api build on Express.js and MongoDB.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33408943"
+	},
+	"item": [
+		{
+			"name": "Bootcamps",
+			"item": [
+				{
+					"name": "All Bootcamps",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/api/v1/bootcamps?select=name,averageRating",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bootcamps"
+							],
+							"query": [
+								{
+									"key": "careers[in]",
+									"value": "Business",
+									"disabled": true
+								},
+								{
+									"key": "averageCost[gt]",
+									"value": "5000",
+									"disabled": true
+								},
+								{
+									"key": "location.city",
+									"value": "Boston",
+									"disabled": true
+								},
+								{
+									"key": "select",
+									"value": "name,averageRating"
+								},
+								{
+									"key": "sort",
+									"value": "-createdAt",
+									"disabled": true
+								},
+								{
+									"key": "housing",
+									"value": "false",
+									"disabled": true
+								},
+								{
+									"key": "averageCost[lte]",
+									"value": "8000",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						},
+						"description": "# Get Bootcamps\n\nThis endpoint retrieves all bootcamp data without requiring the user to login.\n\n## Request\n\n`GET /api/v1/bootcamps`\n\n## Response\n\n- Status: 200\n    \n- Content-Type: application/json\n    \n\n``` json\n{\n  \"success\": true,\n  \"count\": 0,\n  \"data\": [\n    {\n      \"location\": {\n        \"type\": \"\",\n        \"coordinates\": [0],\n        \"formattedAddress\": \"\",\n        \"street\": \"\",\n        \"city\": \"\",\n        \"zipcode\": \"\",\n        \"country\": \"\"\n      },\n      \"_id\": \"\",\n      \"name\": \"\",\n      \"description\": \"\",\n      \"website\": \"\",\n      \"phone\": \"\",\n      \"email\": \"\",\n      \"careers\": [\"\"],\n      \"photo\": \"\",\n      \"housing\": true,\n      \"jobAssistance\": true,\n      \"jobGuarantee\": true,\n      \"acceptGi\": true,\n      \"createdAt\": \"\",\n      \"slug\": \"\",\n      \"__v\": 0\n    }\n  ]\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Bootcamp",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"TEST <script>alert('You've been hacked')</script>\",\n    \"description\": \"ModernTech has one goal, and that is to make you a rockstar developer and/or designer with a six figure salary. We teach both development and UI/UX\",\n    \"website\": \"https://moderntech.com\",\n    \"phone\": \"(222) 222-2222\",\n    \"email\": \"enroll@moderntech.com\",\n    \"address\": \"220 Pawtucket St, Lowell, MA 01854\",\n    \"careers\": [\n        \"Web Development\",\n        \"UI/UX\",\n        \"Mobile Development\"\n    ],\n    \"housing\": false,\n    \"jobAssistance\": true,\n    \"jobGuarantee\": false,\n    \"acceptGi\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/bootcamps",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bootcamps"
+							]
+						},
+						"description": "### Create New Bootcamp\n\nAdds a new bootcamp to the database. The user must be authenticated and have admin or publisher privileges.\n\n#### Request Body\n\n- name (string, required): The name of the bootcamp.\n    \n- description (string, required): Description of the bootcamp.\n    \n- website (string, required): Website URL of the bootcamp.\n    \n- phone (string, required): Contact phone number.\n    \n- email (string, required): Contact email address.\n    \n- address (string, required): Address of the bootcamp.\n    \n- careers (array of strings, required): Array of career types offered by the bootcamp.\n    \n- housing (boolean, required): Indicates if housing is available.\n    \n- jobAssistance (boolean, required): Indicates if job assistance is provided.\n    \n- jobGuarantee (boolean, required): Indicates if job guarantee is provided.\n    \n- acceptGi (boolean, required): Indicates if GI Bill is accepted.\n    \n\n#### Response\n\n``` json\n{\n  \"success\": \"boolean\",\n  \"data\": {\n    \"id\": \"string\",\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"website\": \"string\",\n    \"phone\": \"string\",\n    \"email\": \"string\",\n    \"address\": \"string\",\n    \"careers\": [\"string\"],\n    \"housing\": \"boolean\",\n    \"jobAssistance\": \"boolean\",\n    \"jobGuarantee\": \"boolean\",\n    \"acceptGi\": \"boolean\",\n    \"createdAt\": \"string\"\n  }\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Single Bootcamp",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/bootcamps/5d713a66ec8f2b88b8f830b8",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bootcamps",
+								"5d713a66ec8f2b88b8f830b8"
+							]
+						},
+						"description": "### Get Bootcamp by ID\n\nThis endpoint makes an HTTP GET request to fetch a specific bootcamp from the database using its ID.\n\n#### Request\n\n- Method: `GET`\n    \n- URL: `{{URL}}/api/v1/bootcamps/5d713995b721c3bb38c1f5d0`\n    \n\nThis request is public, and all users can access the bootcamp data.\n\n#### Response\n\n- Status: 200\n    \n- Content-Type: application/json\n    \n\n``` json\n{\n  \"success\": true,\n  \"data\": {\n    \"location\": {\n      \"type\": \"\",\n      \"coordinates\": [0],\n      \"formattedAddress\": \"\",\n      \"street\": \"\",\n      \"city\": \"\",\n      \"zipcode\": \"\",\n      \"country\": \"\"\n    },\n    \"_id\": \"\",\n    \"name\": \"\",\n    \"description\": \"\",\n    \"website\": \"\",\n    \"phone\": \"\",\n    \"email\": \"\",\n    \"careers\": [\"\"],\n    \"photo\": \"\",\n    \"housing\": true,\n    \"jobAssistance\": true,\n    \"jobGuarantee\": true,\n    \"acceptGi\": true,\n    \"createdAt\": \"\",\n    \"slug\": \"\",\n    \"__v\": 0\n  }\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Bootcamp",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"foo@mail.com\"   \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/bootcamps/67b1c1051506a31d96d26425",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bootcamps",
+								"67b1c1051506a31d96d26425"
+							]
+						},
+						"description": "### Update Bootcamp Record\n\nUpdates a bootcamp record and stores changes in the database. User must be authenticated and an admin or publisher.\n\n#### Request Body\n\n- Type: JSON\n    \n\n#### Response\n\nThe response of this request is documented as a JSON schema."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Bootcamp",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/bootcamps/67b1c0fe1506a31d96d26421",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bootcamps",
+								"67b1c0fe1506a31d96d26421"
+							]
+						},
+						"description": "### Delete Bootcamp\n\nDeletes a bootcamp record from the database. The user must be an authenticated admin or publisher.\n\n#### Request Body\n\nThis is an HTTP DELETE request to delete the bootcamp record with the specified ID.\n\n- URL parameter\n    \n    - bootcampId: 5d713995b721c3bb38c1f5d0 (The ID of the bootcamp to be deleted)\n        \n\n#### Response\n\n- Status: 200\n    \n- Content-Type: application/json\n    \n\n``` json\n{\n    \"success\": true,\n    \"data\": {\n        \"location\": {\n            \"type\": \"\",\n            \"coordinates\": [0],\n            \"formattedAddress\": \"\",\n            \"street\": \"\",\n            \"city\": \"\",\n            \"zipcode\": \"\",\n            \"country\": \"\"\n        },\n        \"_id\": \"\",\n        \"name\": \"\",\n        \"description\": \"\",\n        \"website\": \"\",\n        \"phone\": \"\",\n        \"email\": \"\",\n        \"careers\": [\"\"],\n        \"photo\": \"\",\n        \"housing\": true,\n        \"jobAssistance\": true,\n        \"jobGuarantee\": true,\n        \"acceptGi\": true,\n        \"createdAt\": \"\",\n        \"slug\": \"\",\n        \"__v\": 0\n    }\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Bootcamps in radius",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/bootcamps/radius/02118/1000",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bootcamps",
+								"radius",
+								"02118",
+								"1000"
+							]
+						},
+						"description": "### GET /api/v1/bootcamps/radius/02118/1000\n\nThis endpoint retrieves bootcamps within a specified radius.\n\n#### Request Description\n\nNo request body parameters are required for this endpoint. The URL path includes the zip code and radius as path parameters.\n\n- `02118` (string) - The zip code for the location.\n    \n- `1000` (number) - The radius in meters.\n    \n\n#### Response\n\nUpon a successful execution, the server returns a JSON response with a status code of 200.\n\n- `success` (boolean) - Indicates whether the request was successful.\n    \n- `count` (number) - The number of bootcamps found within the specified radius.\n    \n- `data` (array) - An array of bootcamp objects, each containing the following attributes:\n    \n    - `location` (object) - The geographic location of the bootcamp.\n        \n        - `type` (string) - The type of location.\n            \n        - `coordinates` (array) - The coordinates of the location.\n            \n        - `formattedAddress` (string) - The formatted address of the location.\n            \n        - `street` (string) - The street address.\n            \n        - `city` (string) - The city of the location.\n            \n        - `zipcode` (string) - The zip code of the location.\n            \n        - `country` (string) - The country of the location.\n            \n    - `_id` (string) - The unique identifier of the bootcamp.\n        \n    - `name` (string) - The name of the bootcamp.\n        \n    - `description` (string) - The description of the bootcamp.\n        \n    - `website` (string) - The website of the bootcamp.\n        \n    - `phone` (string) - The contact phone number of the bootcamp.\n        \n    - `email` (string) - The contact email of the bootcamp.\n        \n    - `careers` (array) - An array of career options offered by the bootcamp.\n        \n    - `photo` (string) - The photo URL of the bootcamp.\n        \n    - `housing` (boolean) - Indicates whether housing is offered by the bootcamp.\n        \n    - `jobAssistance` (boolean) - Indicates whether job assistance is offered by the bootcamp.\n        \n    - `jobGuarantee` (boolean) - Indicates whether job guarantee is offered by the bootcamp.\n        \n    - `acceptGi` (boolean) - Indicates whether GI Bill is accepted by the bootcamp.\n        \n    - `createdAt` (string) - The creation date of the bootcamp.\n        \n    - `slug` (string) - The slug of the bootcamp.\n        \n    - `__v` (number) - The version of the bootcamp data."
+					},
+					"response": []
+				},
+				{
+					"name": "Courses for bootcamp",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/bootcamps/5d725a037b292f5f8ceff787/courses",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bootcamps",
+								"5d725a037b292f5f8ceff787",
+								"courses"
+							]
+						},
+						"description": "This endpoint makes an HTTP GET request to retrieve a list of courses for a specific bootcamp. The request should be made to {{URL}}/api/v1/bootcamps/5d725a037b292f5f8ceff787/courses.\n\n### Request Body\n\nThis request does not require a request body.\n\n### Response\n\n- Status: 200\n    \n- Content-Type: application/json\n    \n\nThe response will include a \"success\" boolean indicating the success of the request, a \"count\" of the number of courses returned, and an array of \"data\" containing course objects. Each course object includes \"_id\", \"title\", \"description\", \"weeks\", \"tuition\", \"minimumSkill\", \"scholarshipAvailable\", \"bootcamp\", \"createdAt\", and \"__v\" fields."
+					},
+					"response": []
+				},
+				{
+					"name": "Create bootcamp course",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"TEST COURSE\",\n    \"description\": \"This course will provide you with all of the essentials to become a successful Python developer. developer. You will learn to master Python Programming along with tools like Git, VSCode and backend end frameworks like Flask\",\n    \"weeks\": 8,\n    \"tuition\": 1500,\n    \"minimumSkill\": \"beginner\",\n    \"scholarshipsAvailable\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/bootcamps/5d725a037b292f5f8ceff787/courses",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bootcamps",
+								"5d725a037b292f5f8ceff787",
+								"courses"
+							]
+						},
+						"description": "### Create a New Course\n\nThis endpoint allows you to create a new course for a specific bootcamp.\n\n#### Request Body\n\n- title (string, required): The title of the course.\n    \n- description (string, required): A brief description of the course.\n    \n- weeks (number, required): The duration of the course in weeks.\n    \n- tuition (number, required): The cost of the course.\n    \n- minimumSkill (string, required): The minimum skill level required for the course.\n    \n- scholarshipsAvailable (boolean, required): Indicates if scholarships are available for the course.\n    \n\nExample:\n\n``` json\n{\n  \"title\": \"Python Programming Fundamental ...\",\n  \"description\": \"This course will provide you w ...\",\n  \"weeks\": 8,\n  \"tuition\": 8000,\n  \"minimumSkill\": \"beginner\",\n  \"scholarshipsAvailable\": true\n}\n\n ```\n\n#### Response\n\n- success (boolean): Indicates if the request was successful.\n    \n- data (object): Contains the details of the created course, including title, description, weeks, tuition, minimumSkill, scholarshipsAvailable, bootcamp, _id, createdAt, and __v.\n    \n\nExample:\n\n``` json\n{\n  \"success\": true,\n  \"data\": {\n    \"title\": \"\",\n    \"description\": \"\",\n    \"weeks\": \"\",\n    \"tuition\": 0,\n    \"minimumSkill\": \"\",\n    \"scholarshipAvailable\": true,\n    \"bootcamp\": \"\",\n    \"_id\": \"\",\n    \"createdAt\": \"\",\n    \"__v\": 0\n  }\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Bootcamp Photo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/home/machine/Pictures/compound photo.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/bootcamps/67b1c0092759dfc504a8bce1/photo",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bootcamps",
+								"67b1c0092759dfc504a8bce1",
+								"photo"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Routes to handle bootcamp modules."
+		},
+		{
+			"name": "Courses",
+			"item": [
+				{
+					"name": "All Courses",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/api/v1/courses?select=title&sort=title",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"courses"
+							],
+							"query": [
+								{
+									"key": "select",
+									"value": "title"
+								},
+								{
+									"key": "sort",
+									"value": "title"
+								}
+							]
+						},
+						"description": "Retrieves all courses."
+					},
+					"response": []
+				},
+				{
+					"name": "Single Course",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/courses/5d725cfec4ded7bcb480eaa4",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"courses",
+								"5d725cfec4ded7bcb480eaa4"
+							]
+						},
+						"description": "The endpoint retrieves information about a specific course identified by its ID. The response is a JSON object with the following schema:\n\n``` json\n{\n    \"success\": boolean,\n    \"data\": {\n        \"_id\": string,\n        \"title\": string,\n        \"description\": string,\n        \"weeks\": string,\n        \"tuition\": number,\n        \"minimumSkill\": string,\n        \"scholarshipAvailable\": boolean,\n        \"bootcamp\": {\n            \"_id\": string,\n            \"name\": string,\n            \"description\": string,\n            \"id\": string\n        },\n        \"createdAt\": string,\n        \"__v\": number\n    }\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Course",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"scholarshipAvailable\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/courses/5d725cfec4ded7bcb480eaa4",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"courses",
+								"5d725cfec4ded7bcb480eaa4"
+							]
+						},
+						"description": "Update a course in the database."
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Course",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/api/v1/courses/67b03d48da546897fd0b42f3",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"courses",
+								"67b03d48da546897fd0b42f3"
+							]
+						},
+						"description": "Update a course in the database."
+					},
+					"response": []
+				}
+			],
+			"description": "Routes for handling courses."
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = pm.response.json();",
+									"pm.environment.set(\"TOKEN\", jsonData.token);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YjBjN2JkZWVmNTRhMGMxNTBkZTQ4OSIsImlhdCI6MTczOTY5NjgyMCwiZXhwIjoxNzM5OTU2MDIwfQ.PN3ObxwbFLHIYecnYcP20xPmtPY7x2uGZ_DQxlcrCA4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"user Account\",\n    \"email\": \"user@gmail.com\",\n    \"role\": \"user\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/auth/register",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"register"
+							]
+						},
+						"description": "### Register User\n\nThis endpoint allows the client to register a new user.\n\n#### Request Body\n\n- `name`: (text) The name of the user.\n    \n- `email`: (text) The email address of the user.\n    \n- `role`: (text) The role of the user.\n    \n- `password`: (text) The password for the user account.\n    \n\nExample:\n\n``` json\n{\n    \"name\": \"Admin Account\",\n    \"email\": \"admin@gmail.com\",\n    \"role\": \"user\",\n    \"password\": \"123456\"\n}\n\n ```\n\n#### Response\n\n- `success`: (boolean) Indicates if the registration was successful.\n    \n\nExample:\n\n``` json\n{\n    \"success\": true\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@gmail.com\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/auth/login",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						},
+						"description": "### Authenticate User\n\nThis endpoint allows the client to authenticate a user and obtain a token for accessing protected resources.\n\n#### Request Body\n\n- `email`: (text) The email address of the user.\n    \n- `password`: (text) The password for the user account.\n    \n\nExample:\n\n``` json\n{\n    \"email\": \"admin@gmail.com\",\n    \"password\": \"123456\"\n}\n\n ```\n\n#### Response\n\nThe response is in the form of a JSON schema:\n\n``` json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"success\": {\n            \"type\": \"boolean\"\n        },\n        \"token\": {\n            \"type\": \"string\"\n        }\n    }\n}\n\n ```\n\n- `success`: (boolean) Indicates if the authentication was successful.\n    \n- `token`: (string) The authentication token for accessing protected resources.\n    \n\nExample:\n\n``` json\n{\n    \"success\": true,\n    \"token\": \"\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Logged in User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/auth/me",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"me"
+							]
+						},
+						"description": "### Get Current User Details\n\nThis endpoint is used to retrieve the details of the currently authenticated user.\n\n#### Request\n\n- Method: GET\n    \n- URL: `{{URL}}/api/v1/auth/me`\n    \n\n#### Response\n\n- Status: 200 OK\n    \n- Content-Type: application/json\n    \n\n``` json\n{\n    \"success\": true,\n    \"data\": {\n        \"_id\": \"\",\n        \"name\": \"\",\n        \"email\": \"\",\n        \"role\": \"\",\n        \"createdAt\": \"\",\n        \"__v\": 0\n    }\n}\n\n ```\n\nThe response contains the user details including the user's ID, name, email, role, and creation timestamp."
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"simonkenya846@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/auth/forgotpassword",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"forgotpassword"
+							]
+						},
+						"description": "### API Request Description\n\nThis endpoint is used to initiate the process of resetting a forgotten password. The HTTP POST request should be sent to `{{URL}}/api/v1/auth/forgotpassword` with the `email` parameter in the request body.\n\n### API Response JSON Schema\n\n``` json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"success\": {\n            \"type\": \"boolean\"\n        },\n        \"data\": {\n            \"type\": \"object\",\n            \"properties\": {\n                \"_id\": {\n                    \"type\": \"string\"\n                },\n                \"name\": {\n                    \"type\": \"string\"\n                },\n                \"email\": {\n                    \"type\": \"string\"\n                },\n                \"role\": {\n                    \"type\": \"string\"\n                },\n                \"createdAt\": {\n                    \"type\": \"string\"\n                },\n                \"__v\": {\n                    \"type\": \"integer\"\n                },\n                \"resetPasswordToken\": {\n                    \"type\": \"string\"\n                },\n                \"resetPasswordExpire\": {\n                    \"type\": \"string\"\n                }\n            }\n        }\n    }\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Reset password",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"password\": \"passcode\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/auth/resetpassword/3dc0414686647cb8b8ba562b3f392333ea3e090f",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"resetpassword",
+								"3dc0414686647cb8b8ba562b3f392333ea3e090f"
+							]
+						},
+						"description": "### Reset User Password\n\nThis endpoint is used to reset a forgotten password. The HTTP PUT request should be sent to `{{URL}}/api/v1/auth/resetpassword/3dc0414686647cb8b8ba562b3f392333ea3e090f` with the following payload in the raw request body type:\n\n``` json\n{\n    \"password\": \"passcode\"\n}\n\n ```\n\n### API Response JSON Schema\n\n``` json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"success\": {\n            \"type\": \"boolean\"\n        },\n        \"data\": {\n            \"type\": \"object\",\n            \"properties\": {\n                \"_id\": {\n                    \"type\": \"string\"\n                },\n                \"name\": {\n                    \"type\": \"string\"\n                },\n                \"email\": {\n                    \"type\": \"string\"\n                },\n                \"role\": {\n                    \"type\": \"string\"\n                },\n                \"createdAt\": {\n                    \"type\": \"string\"\n                },\n                \"__v\": {\n                    \"type\": \"integer\"\n                },\n                \"resetPasswordToken\": {\n                    \"type\": \"string\"\n                },\n                \"resetPasswordExpire\": {\n                    \"type\": \"string\"\n                }\n            }\n        }\n    }\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User  Detiails",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Symon Muchemi\",\n    \"email\": \"{{$randomEmail}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/auth/updatedetails",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"updatedetails"
+							]
+						},
+						"description": "### Update User Details\n\nThis endpoint allows the logged in user to update their details.\n\n#### Request Body\n\n- `name` (string, required): The updated name of the user.\n    \n- `email` (string, required): The updated email of the user.\n    \n\n#### Response\n\n- Status: 200\n    \n- Content-Type: application/json\n    \n\n``` json\n{\n    \"success\": true,\n    \"data\": {\n        \"_id\": \"\",\n        \"name\": \"\",\n        \"email\": \"\",\n        \"role\": \"\",\n        \"createdAt\": \"\",\n        \"__v\": 0\n    }\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Password",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"currentPassword\": \"passcode\",\n    \"newPassword\": \"1223334444\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/auth/updatepassword",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"updatepassword"
+							]
+						},
+						"description": "### Update Password\n\nThis endpoint allows the user to update their password.\n\n#### Request Body\n\n- `currentPassword` (string): The current password of the user.\n    \n- `newPassword` (string): The new password to be set.\n    \n\n#### Response\n\nThe response is in JSON format and follows the schema below:\n\n``` json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"success\": {\n      \"type\": \"boolean\"\n    },\n    \"error\": {\n      \"type\": \"string\"\n    }\n  }\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/auth/logout",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"logout"
+							]
+						},
+						"description": "### GET /api/v1/auth/logout\n\nThis endpoint is used to log out the authenticated user.\n\n#### Request\n\nNo request body is required for this endpoint.\n\n#### Response\n\nThe response for this request is a JSON object with the following schema:\n\n``` json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"success\": {\n            \"type\": \"boolean\"\n        },\n        \"data\": {\n            \"type\": \"object\"\n        }\n    }\n}\n\n ```\n\nThe response contains a \"success\" boolean flag indicating the success of the logout operation, and an empty \"data\" object."
+					},
+					"response": []
+				}
+			],
+			"description": "Routes to handle authentication requests and user registration."
+		},
+		{
+			"name": "Admin Crud",
+			"item": [
+				{
+					"name": "All Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/api/v1/users",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						},
+						"description": "### GET /api/v1/users\n\nThis endpoint is used to retrieve a list of users.\n\nUser must be a logged in admin.\n\n#### Request Body\n\nThis request does not require a request body.\n\n#### Response\n\n- Status: 200\n    \n- Content-Type: application/json\n    \n\n##### Response Body\n\nThe response will contain a JSON object with the following fields:\n\n- `success` (boolean): Indicates if the request was successful.\n    \n- `count` (integer): The number of users returned.\n    \n- `pagination` (object): Pagination information.\n    \n- `data` (array): An array of user objects, each containing the following fields:\n    \n    - `_id` (string): The unique identifier for the user.\n        \n    - `name` (string): The name of the user.\n        \n    - `email` (string): The email address of the user.\n        \n    - `role` (string): The role of the user.\n        \n    - `createdAt` (string): The date and time when the user was created.\n        \n    - `__v` (integer): Version key."
+					},
+					"response": []
+				},
+				{
+					"name": "Single User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/api/v1/users/67d02ab5759882081e3312f5",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"67d02ab5759882081e3312f5"
+							]
+						},
+						"description": "### Get User by ID\n\nThis endpoint makes an HTTP GET request to fetch a specific user from the database using its ID.\n\n#### Request\n\n- Method: `GET`\n    \n- URL: `{{URL}}/api/v1/users/5d713995b721c3bb38c1f5d0`\n    \n\nThis request is private, and only admin users can access user data.\n\n#### Response\n\n- Status: 200\n    \n- Content-Type: application/json\n    \n\n``` json\n{\n  \"success\": true,\n  \"data\": {\n   \"_id\": \"\",\n        \"name\": \"\",\n        \"email\": \"\",\n        \"role\": \"\",\n        \"createdAt\": \"\",\n        \"__v\": 0\n  }\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Ronaldo Kutch\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/users/67cf3c718bdc09a4832e855e",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"67cf3c718bdc09a4832e855e"
+							]
+						},
+						"description": "### Reset User Password\n\nThis endpoint is used to reset a forgotten password. The HTTP PUT request should be sent to `{{URL}}/api/v1/auth/resetpassword/3dc0414686647cb8b8ba562b3f392333ea3e090f` with the following payload in the raw request body type:\n\n``` json\n{\n    \"password\": \"passcode\"\n}\n\n ```\n\n### API Response JSON Schema\n\n``` json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"success\": {\n            \"type\": \"boolean\"\n        },\n        \"data\": {\n            \"type\": \"object\",\n            \"properties\": {\n                \"_id\": {\n                    \"type\": \"string\"\n                },\n                \"name\": {\n                    \"type\": \"string\"\n                },\n                \"email\": {\n                    \"type\": \"string\"\n                },\n                \"role\": {\n                    \"type\": \"string\"\n                },\n                \"createdAt\": {\n                    \"type\": \"string\"\n                },\n                \"__v\": {\n                    \"type\": \"integer\"\n                },\n                \"resetPasswordToken\": {\n                    \"type\": \"string\"\n                },\n                \"resetPasswordExpire\": {\n                    \"type\": \"string\"\n                }\n            }\n        }\n    }\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Ronaldo Kutch\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/users/67cf3c718bdc09a4832e855e",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"67cf3c718bdc09a4832e855e"
+							]
+						},
+						"description": "### Reset User Password\n\nThis endpoint is used to reset a forgotten password. The HTTP PUT request should be sent to `{{URL}}/api/v1/auth/resetpassword/3dc0414686647cb8b8ba562b3f392333ea3e090f` with the following payload in the raw request body type:\n\n``` json\n{\n    \"password\": \"passcode\"\n}\n\n ```\n\n### API Response JSON Schema\n\n``` json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"success\": {\n            \"type\": \"boolean\"\n        },\n        \"data\": {\n            \"type\": \"object\",\n            \"properties\": {\n                \"_id\": {\n                    \"type\": \"string\"\n                },\n                \"name\": {\n                    \"type\": \"string\"\n                },\n                \"email\": {\n                    \"type\": \"string\"\n                },\n                \"role\": {\n                    \"type\": \"string\"\n                },\n                \"createdAt\": {\n                    \"type\": \"string\"\n                },\n                \"__v\": {\n                    \"type\": \"integer\"\n                },\n                \"resetPasswordToken\": {\n                    \"type\": \"string\"\n                },\n                \"resetPasswordExpire\": {\n                    \"type\": \"string\"\n                }\n            }\n        }\n    }\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{$randomFullName}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"role\": \"publisher\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/users",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						},
+						"description": "### Create User\n\nThis endpoint allows the client to create a new user with the provided details.\n\n#### Request Body\n\n- `name` (string, required): The name of the user.\n    \n- `email` (string, required): The email address of the user.\n    \n- `role` (string, required): The role of the user.\n    \n- `password` (string, required): The password for the user.\n    \n\n#### Response\n\nThe response is a JSON object with the following schema:\n\n``` json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"success\": {\n      \"type\": \"boolean\"\n    },\n    \"data\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"name\": {\n          \"type\": \"string\"\n        },\n        \"email\": {\n          \"type\": \"string\"\n        },\n        \"role\": {\n          \"type\": \"string\"\n        },\n        \"password\": {\n          \"type\": \"string\"\n        },\n        \"_id\": {\n          \"type\": \"string\"\n        },\n        \"createdAt\": {\n          \"type\": \"string\"\n        },\n        \"__v\": {\n          \"type\": \"integer\"\n        }\n      }\n    }\n  }\n}\n\n ```"
+					},
+					"response": []
+				}
+			],
+			"description": "Routes to handle user CRUD.",
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{TOKEN}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Reviews",
+			"item": [
+				{
+					"name": "Bootcamp Reviews",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/bootcamps/5d7a514b5d2c12c7449be026/reviews",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bootcamps",
+								"5d7a514b5d2c12c7449be026",
+								"reviews"
+							],
+							"query": [
+								{
+									"key": "select",
+									"value": "name,user",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "-createdAt",
+									"disabled": true
+								}
+							]
+						},
+						"description": "This endpoint makes an HTTP GET request to retrieve the reviews for a specific bootcamp. The request should be sent to {{URL}}/api/v1/bootcamps/5d725a1b7b292f5f8ceff788/reviews.\n\n### Request\n\nNo request body is required for this endpoint.\n\n### Response\n\nThe endpoint returns a JSON object with the following properties:\n\n- `success` (boolean): Indicates if the request was successful.\n    \n- `count` (number): The total number of reviews returned.\n    \n- `data` (array): An array of review objects, each containing the following properties:\n    \n    - `_id` (string): The unique identifier for the review.\n        \n    - `title` (string): The title of the review.\n        \n    - `text` (string): The text content of the review.\n        \n    - `rating` (number): The rating given in the review.\n        \n    - `bootcamp` (string): The ID of the bootcamp associated with the review.\n        \n    - `user` (string): The ID of the user who submitted the review.\n        \n    - `createdAt` (string): The timestamp of when the review was created.\n        \n    - `__v` (number): Version key for the review object.\n        \n\nNote: The response indicates that no reviews were found for the specified bootcamp."
+					},
+					"response": []
+				},
+				{
+					"name": "All Reviews",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/reviews",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reviews"
+							],
+							"query": [
+								{
+									"key": "select",
+									"value": "name,user",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "-createdAt",
+									"disabled": true
+								}
+							]
+						},
+						"description": "The endpoint retrieves a list of reviews via an HTTP GET request to {{URL}}/api/v1/reviews.\n\n### Response\n\nThe response is a JSON object with the following schema:\n\n``` json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"success\": {\n            \"type\": \"boolean\"\n        },\n        \"count\": {\n            \"type\": \"integer\"\n        },\n        \"pagination\": {\n            \"type\": \"object\"\n        },\n        \"data\": {\n            \"type\": \"array\",\n            \"items\": {\n                \"type\": \"object\",\n                \"properties\": {\n                    \"_id\": {\n                        \"type\": \"string\"\n                    },\n                    \"title\": {\n                        \"type\": \"string\"\n                    },\n                    \"text\": {\n                        \"type\": \"string\"\n                    },\n                    \"rating\": {\n                        \"type\": \"integer\"\n                    },\n                    \"bootcamp\": {\n                        \"type\": \"object\",\n                        \"properties\": {\n                            \"_id\": {\n                                \"type\": \"string\"\n                            },\n                            \"name\": {\n                                \"type\": \"string\"\n                            },\n                            \"description\": {\n                                \"type\": \"string\"\n                            },\n                            \"user\": {\n                                \"type\": \"string\"\n                            },\n                            \"id\": {\n                                \"type\": \"string\"\n                            }\n                        }\n                    },\n                    \"user\": {\n                        \"type\": \"string\"\n                    },\n                    \"createdAt\": {\n                        \"type\": \"string\"\n                    },\n                    \"__v\": {\n                        \"type\": \"integer\"\n                    }\n                }\n            }\n        }\n    }\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Single Review",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/reviews/5d7a514b5d2c12c7449be026",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reviews",
+								"5d7a514b5d2c12c7449be026"
+							]
+						},
+						"description": "This endpoint makes an HTTP GET request to retrieve the review with the specified ID. The response will be in JSON format and will include the success status along with the review data, including the review ID, title, text, rating, associated bootcamp details, user, creation timestamp, and version."
+					},
+					"response": []
+				},
+				{
+					"name": "Add Bootcamp Review",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Some Other Review!\",\n    \"text\": \"This is another sample review made to test the add review endpont\",\n    \"rating\": \"10\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/bootcamps/5d725a1b7b292f5f8ceff788/reviews",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bootcamps",
+								"5d725a1b7b292f5f8ceff788",
+								"reviews"
+							]
+						},
+						"description": "### Add Bootcamp Review\n\nThis endpoint allows the user to add a review for a specific bootcamp.\n\n#### Request Body\n\n- `title` (string): The title of the review.\n    \n- `text` (string): The content of the review.\n    \n- `rating` (integer): The rating given to the bootcamp.\n    \n\nExample:\n\n``` json\n{\n    \"title\": \"Some Other Review!\",\n    \"text\": \"This is another sample review...\",\n    \"rating\": 10\n}\n\n ```\n\n#### Response\n\n- `success` (boolean): Indicates if the request was successful.\n    \n- `error` (string): An empty string if there was no error.\n    \n\nExample:\n\n``` json\n{\n    \"success\": true,\n    \"error\": \"\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Review",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Updated again!!\",\n    \"text\": \"Lorem ipsum dolor.\",\n    \"rating\": 10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/reviews/5d7a514b5d2c12c7449be027",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reviews",
+								"5d7a514b5d2c12c7449be027"
+							]
+						},
+						"description": "### Update Review\n\nThis endpoint allows the user to update a specific review by making an HTTP PUT request to the specified URL.\n\n#### Request Body\n\n- `title` (string) - The updated title of the review.\n    \n- `text` (string) - The updated text content of the review.\n    \n- `rating` (number) - The updated rating for the review.\n    \n\nExample:\n\n``` json\n{\n    \"title\": \"Updated again!!\",\n    \"text\": \"Lorem ipsum dolor.\",\n    \"rating\": 10\n}\n\n ```\n\n#### Response\n\nUpon a successful update, the endpoint returns a JSON object with the following structure:\n\n- `success` (boolean) - Indicates if the update was successful.\n    \n- `data` (object) - An object containing the updated review details, including the updated `title`, `text`, and `rating`.\n    \n\nExample Response:\n\n``` json\n{\n    \"success\": true,\n    \"data\": {\n        \"_id\": \"\",\n        \"title\": \"\",\n        \"text\": \"\",\n        \"rating\": 0,\n        \"bootcamp\": \"\",\n        \"user\": \"\",\n        \"createdAt\": \"\",\n        \"__v\": 0\n    }\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Review",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/reviews/5d7a514b5d2c12c7449be027",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reviews",
+								"5d7a514b5d2c12c7449be027"
+							]
+						},
+						"description": "### Delete Review\n\nThis endpoint is used to delete a specific review by providing the review ID in the URL.\n\n#### Request Body\n\nThis request does not require a request body.\n\n#### Response\n\n- `success` (boolean): Indicates whether the deletion was successful.\n    \n- `data` (object): An empty object is returned upon successful deletion.\n    \n\nExample Response:\n\n``` json\n{\n    \"success\": true,\n    \"data\": {}\n}\n\n ```"
+					},
+					"response": []
+				}
+			],
+			"description": "Contains request made to handle reviews."
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{TOKEN}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
