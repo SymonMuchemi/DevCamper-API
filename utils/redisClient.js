@@ -1,6 +1,6 @@
 const { createClient } = require('redis');
 
-const STREAMNAME = 'devcamper:mail'
+const STREAMNAME = 'devcamper:mail';
 
 class RedisClient {
   constructor() {
@@ -8,22 +8,22 @@ class RedisClient {
 
     this.client
       .connect()
-      .then(console.log('Redis connection succeeded!'.green.inverse))
-      .catch(console.error); // Explicitly connect the client
+      .then(() => console.log('Redis connection succeeded!'.green.inverse))
+      .catch((err) => console.log(err.message));
   }
 
   isAlive() {
-    return this.client.isReady; // Correct way to check readiness in Redis v4+
+    return this.client.isReady;
   }
 
   async get(key) {
-    return this.client.get(key); // No need for promisify in Redis v4+
+    return this.client.get(key);
   }
 
   async set(key, val) {
     const time = parseInt(process.env.REDIS_SET_EXPIRE, 10) || 3600;
 
-    return this.client.set(key, val, { EX: time }); // Correct Redis v4+ syntax
+    return this.client.set(key, val, { EX: time });
   }
 
   async del(key) {
