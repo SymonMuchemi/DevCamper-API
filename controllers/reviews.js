@@ -91,3 +91,29 @@ exports.updateReview = asyncHandler(async (req, res, next) => {
     data: updatedReview,
   });
 });
+
+// @desc    deletes a bootcamp review
+// @route   DELETE /api/v1/reviews/:id
+// @access  Private/User
+exports.deleteReview = asyncHandler(async (req, res, next) => {
+  const review = await Review.findById(req.params.id);
+
+  if (!review)
+    return next(
+      new ErrorResponse(`Could not find review with id: ${req.params.id}`, 500)
+    );
+
+  // ensure review belongs to the user or the user is the admin
+  if (review.user.toString() !== req.user.id && req.user.role !== 'admin') {
+    return next(
+      new ErrorResponse('You are not authorized to perform this action', 401)
+    );
+  }
+
+  await Review.findByIdAndDelete(req.params.id);
+
+  res.status(200).json({
+    success: true,
+    data: {},
+  });
+});
