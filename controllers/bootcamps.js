@@ -38,8 +38,10 @@ exports.getBootcamp = asyncHandler(async (req, res, next) => {
 exports.createBootcamp = asyncHandler(async (req, res, next) => {
   req.body.user = req.user.id;
 
+  console.log(`User ID: ${req.user.id}`);
+
   // check for published bootcamps
-  const publishedBootcamp = await Bootcamp.findOne({
+  const publishedBootcamp = await Bootcamp.find({
     user: req.user.id,
   });
 
