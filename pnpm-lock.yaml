@@ -23,6 +23,9 @@ importers:
       express-fileupload:
         specifier: ^1.5.1
         version: 1.5.1
+      express-mongo-sanitize:
+        specifier: ^2.2.0
+        version: 2.2.0
       jsonwebtoken:
         specifier: ^9.0.2
         version: 9.0.2
@@ -262,6 +265,10 @@ packages:
   express-fileupload@1.5.1:
     resolution: {integrity: sha512-LsYG1ALXEB7vlmjuSw8ABeOctMp8a31aUC5ZF55zuz7O2jLFnmJYrCv10py357ky48aEoBQ/9bVXgFynjvaPmA==}
     engines: {node: '>=12.0.0'}
+
+  express-mongo-sanitize@2.2.0:
+    resolution: {integrity: sha512-PZBs5nwhD6ek9ZuP+W2xmpvcrHwXZxD5GdieX2dsjPbAbH4azOkrHbycBud2QRU+YQF1CT+pki/lZGedHgo/dQ==}
+    engines: {node: '>=10'}
 
   express@4.21.2:
     resolution: {integrity: sha512-28HqgMZAmih1Czt9ny7qr6ek2qddF4FclbMzwhCREB6OFfH+rXAnuNCwo1/wFvrtbgsQDb4kSbX9de9lFbrXnA==}
@@ -877,6 +884,8 @@ snapshots:
   express-fileupload@1.5.1:
     dependencies:
       busboy: 1.6.0
+
+  express-mongo-sanitize@2.2.0: {}
 
   express@4.21.2:
     dependencies:
