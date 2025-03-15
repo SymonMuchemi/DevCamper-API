@@ -13,12 +13,6 @@ exports.protect = asyncHandler(async (req, res, next) => {
     token = authHeader.split(' ')[1];
   }
 
-  // TODO: Research how to use cookie for authorization
-  //   else if (req.cookie.token) {
-  //     token = req.cookie.token;
-  //   }
-
-  // ensure token exists
   if (!token) {
     return next(new ErrorResponse('Unauthorized access', 401));
   }
