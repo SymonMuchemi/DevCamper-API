@@ -1,6 +1,5 @@
 const express = require('express');
 const dotenv = require('dotenv');
-const morgan = require('morgan');
 const fileupload = require('express-fileupload');
 const colors = require('colors');
 const path = require('path');
@@ -64,6 +63,8 @@ app.use(hpp());
 app.use(cors());
 
 if (NODE_ENV === 'development') {
+  const morgan = require('morgan');
+
   app.use(morgan('dev'));
 }
 
