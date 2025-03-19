@@ -15,7 +15,7 @@ jobs:
         
             - name: Stop and remove existing containers
               run: |
-                cd ~/DevCamper-API
+                cd ~/DevCamper-API || git clone https://github.com/SymonMuchemi/DevCamper-API.git
                 sudo docker-compose down || true
             
             - name: Pull latest changes
