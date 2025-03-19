@@ -19,7 +19,7 @@ jobs:
             
             - name: Ensure Repository Exists
               run: |
-                if [ ! -d "$DEPLOY_PATH"]; then
+                if [ ! -d "$DEPLOY_PATH" ]; then
                     git clone https://x-access-token:${GH_PAT}@github.com/SymonMuchemi/DevCamper-API.git $DEPLOY_PATH
                 fi
         
