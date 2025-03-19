@@ -5,9 +5,11 @@ const STREAMNAME = 'devcamper:mail';
 class RedisClient {
   constructor() {
     this.client = createClient({
-      url: `redis://${process.env.REDIS_HOST || 'localhost'}:${
-        process.env.REDIS_PORT || 6379
-      }`,
+      socket: {
+        host: process.env.REDIS_HOST,
+        port: process.env.REDIS_PORT
+      },
+      password: process.env.REDIS_PASSWORD
     });
 
     this.client

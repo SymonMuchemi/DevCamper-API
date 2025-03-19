@@ -171,11 +171,12 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
   const message = `${resetUrl}`;
 
   try {
-    await redisClient.writeToMailStream(
+    const messageId = await redisClient.writeToMailStream(
       user.email,
       'Password Reset Token',
       message
     );
+    
     res.status(200).json({ success: true, data: 'Email queued' });
   } catch (error) {
     console.error(error);
