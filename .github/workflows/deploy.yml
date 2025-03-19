@@ -9,21 +9,31 @@ jobs:
     deploy:
         runs-on: self-hosted
 
+        env:
+            DEPLOY_PATH: "/home/ubuntu/DevCamper-API"
+            GH_PAT: ${{ secrets.GH_PAT }}
+
         steps:
             - name: Checkout Repository
               uses: actions/checkout@v3
+            
+            - name: Ensure Repository Exists
+              run: |
+                if [ ! -d "$DEPLOY_PATH"]; then
+                    git clone https://x-access-token:${GH_PAT}@github.com/SymonMuchemi/DevCamper-API.git $DEPLOY_PATH
+                fi
         
             - name: Stop and remove existing containers
               run: |
-                cd ~/DevCamper-API
+                cd $DEPLOY_PATH
                 sudo docker-compose down || true
             
             - name: Pull latest changes
               run: |
-                cd ~/DevCamper-API
+                cd $DEPLOY_PATH
                 git pull origin main
             
             - name: Build and start containers
               run: |
-                cd ~/DevCamper-API
+                cd $DEPLOY_PATH
                 sudo docker-compose up --build -d
