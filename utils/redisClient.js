@@ -15,7 +15,7 @@ class RedisClient {
     this.client
       .connect()
       .then(() => console.log('Redis connection succeeded!'.green.inverse))
-      .catch((err) => console.log(err.message));
+      .catch((err) => console.log(`Redis connection error: ${err.message}`));
   }
 
   isAlive() {
