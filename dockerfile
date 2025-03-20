@@ -20,4 +20,4 @@ EXPOSE 3001
 ENV NODE_ENV=production
 
 # Start the application
-CMD [ "node", "server.js" ]
+CMD [ "node", "-r", "dotenv/config", "server.js" ]
