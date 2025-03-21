@@ -112,57 +112,74 @@ npm start
 
 ## Infrastructure Design
 
-![alt text](<Devcamper Architectural Diagram with region.png>)
+![Devcamper Infrastructure Design Diagram](<Devcamper Architectural Diagram with region.png>)
 
 ## Infrastructure Details
 
 ### VPC and Subnets
 
-- **DevCamper VPC**: The entire infrastructure is contained within a Virtual Private Cloud (VPC).
-- **Public Subnet (10.0.0.0/24)**: Contains resources that need to be accessible from the internet.
-- **Private Subnet (10.0.2.0/24)**: Contains resources that do not need to be directly accessible from the internet.
+**DevCamper VPC**: The entire infrastructure is contained within a Virtual Private Cloud (VPC).
+
+**Public Subnet (10.0.0.0/24)**: Contains resources that need to be accessible from the internet.
+
+**Private Subnet (10.0.2.0/24)**: Contains resources that do not need to be directly accessible from the internet.
 
 ### Components
 
-- **Web Server (Public Subnet)**
+**Web Server (Public Subnet)**
 
-  - Handles HTTP requests from users.
-  - Interacts with the Redis cache for reading cached data and writing cache/stream data.
+- Handles HTTP requests from users.
+- Interacts with the Redis cache for reading cached data and writing cache/stream data.
+- Interacts with the NoSQL database for reading uncached data and writing new data, updates, or deletions.
 
-- **Redis Cache (Private Subnet)**
+**Redis Cache (Private Subnet)**
 
-  - Acts as a caching layer to store frequently accessed data.
-  - Also used for writing to the mail stream.
+- Acts as a caching layer to store frequently accessed data.
+- Also used for writing to the mail stream.
 
-- **Mail Stream (Private Subnet)**
+**Mail Stream (Private Subnet)**
 
-  - A stream of email messages that need to be processed.
-  - Written to by the web server and read by the mail worker.
+- A stream of email messages that need to be processed.
+- Written to by the web server and read by the mail worker.
 
-- **Mail Worker (Private Subnet)**
-  - Reads from the mail stream.
-  - Processes email messages and sends them to users.
+**Mail Worker (Private Subnet)**
+
+- Reads from the mail stream.
+- Processes email messages and sends them to users.
+
+**NoSQL Database (Private Subnet)**
+
+- Stores application data that is not cached.
+- Interacts with the web server for reading and writing data.
 
 ### Data Flow
 
-- **User Interaction**
+**User Interaction**
 
-  - A user sends an HTTP request to the web server.
+- A user sends an HTTP request to the web server.
 
-- **Web Server Operations**
+**Web Server Operations**
 
-  - The web server processes the request.
-  - It may read cached data from Redis.
-  - It writes data to the Redis cache and the mail stream.
+- The web server processes the request.
+- It may read cached data from Redis.
+- It writes data to the Redis cache and the mail stream.
+- It reads uncached data from the NoSQL database.
+- It writes new data, updates, or deletions to the NoSQL database.
 
-- **Mail Stream Processing**
-  - The mail worker reads from the mail stream.
-  - Processes the email messages and sends them to the user.
+**Mail Stream Processing**
+
+- The mail worker reads from the mail stream.
+- Processes the email messages and sends them to the user.
+
+**Response to User**
+
+- The web server sends an HTTP response back to the user.
 
 ### Network Security
 
-- **Public Subnet**: Accessible from the internet, allowing users to interact with the web server.
-- **Private Subnet**: Isolated from direct internet access, ensuring that Redis and the mail worker are secure.
+**Public Subnet**: Accessible from the internet, allowing users to interact with the web server.
+
+**Private Subnet**: Isolated from direct internet access, ensuring that Redis, the mail worker, and the NoSQL database are secure.
 
 ## Author
 
