@@ -58,11 +58,13 @@ DevCamper is a RESTful API that provides a platform for bootcamps, courses, revi
 ## Installation
 
 1. Clone the repository
+
 ```
 git clone https://github.com/SymonMuchemi/DevCamper-API.git
 ```
 
 2. Install dependencies
+
 ```
 npm install
 ```
@@ -102,11 +104,11 @@ npm start
 
 6. Access the application on `http://localhost:3001/`
 
-
 ## API Documentation
 
 - Local documentation: [http://localhost:3001/](http://localhost:3001/)
 - Live documentation: [link](https://51.21.253.85/)
+- Postman Published Documentation: [link][https://documenter.getpostman.com/view/33408943/2sAYkBsghW]
 
 ## Infrastructure Design
 
@@ -123,34 +125,39 @@ npm start
 ### Components
 
 - **Web Server (Public Subnet)**
-    - Handles HTTP requests from users.
-    - Interacts with the Redis cache for reading cached data and writing cache/stream data.
+
+  - Handles HTTP requests from users.
+  - Interacts with the Redis cache for reading cached data and writing cache/stream data.
 
 - **Redis Cache (Private Subnet)**
-    - Acts as a caching layer to store frequently accessed data.
-    - Also used for writing to the mail stream.
+
+  - Acts as a caching layer to store frequently accessed data.
+  - Also used for writing to the mail stream.
 
 - **Mail Stream (Private Subnet)**
-    - A stream of email messages that need to be processed.
-    - Written to by the web server and read by the mail worker.
+
+  - A stream of email messages that need to be processed.
+  - Written to by the web server and read by the mail worker.
 
 - **Mail Worker (Private Subnet)**
-    - Reads from the mail stream.
-    - Processes email messages and sends them to users.
+  - Reads from the mail stream.
+  - Processes email messages and sends them to users.
 
 ### Data Flow
 
 - **User Interaction**
-    - A user sends an HTTP request to the web server.
+
+  - A user sends an HTTP request to the web server.
 
 - **Web Server Operations**
-    - The web server processes the request.
-    - It may read cached data from Redis.
-    - It writes data to the Redis cache and the mail stream.
+
+  - The web server processes the request.
+  - It may read cached data from Redis.
+  - It writes data to the Redis cache and the mail stream.
 
 - **Mail Stream Processing**
-    - The mail worker reads from the mail stream.
-    - Processes the email messages and sends them to the user.
+  - The mail worker reads from the mail stream.
+  - Processes the email messages and sends them to the user.
 
 ### Network Security
 
@@ -160,4 +167,3 @@ npm start
 ## Author
 
 - [Simon Muchemi](https:www.github.com/SymonMuchemi)
-
