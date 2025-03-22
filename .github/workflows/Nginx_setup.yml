@@ -26,5 +26,6 @@ jobs:
                 fi
             - name: Run config script
               run: |
-                chmod +x DevCamper-API/nginx_setup_script.sh
-                ./DevCamper-API/nginx_setup_script.sh
+                cd $DEPLOY_PATH
+                chmod +x nginx_setup_script.sh
+                ./nginx_setup_script.sh
