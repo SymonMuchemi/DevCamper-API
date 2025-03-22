@@ -42,3 +42,6 @@ sudo systemctl enable certbot.timer
 
 # Step 8: Verify HTTPS is working
 curl -I https://devcamper.symonmuchemi.com
+
+# Step 8: Verify HTTPS is working
+curl -I https://www.devcamper.symonmuchemi.com
