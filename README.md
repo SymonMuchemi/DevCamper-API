@@ -108,7 +108,7 @@ npm start
 
 - Local documentation: [http://localhost:3001/](http://localhost:3001/)
 - Live documentation: [link](https://51.21.253.85/)
-- Postman Published Documentation: [link][https://documenter.getpostman.com/view/33408943/2sAYkBsghW]
+- Postman Published Documentation: [https://documenter.getpostman.com/view/33408943/2sAYkBsghW](https://documenter.getpostman.com/view/33408943/2sAYkBsghW)
 
 ## Infrastructure Design
 
