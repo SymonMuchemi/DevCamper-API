@@ -1,6 +1,8 @@
 # Step 1: Install Nginx
 sudo apt update && sudo apt install nginx -y
 
+echo "Configuring nginx..."
+
 # Step 2: Create the Nginx configuration for devcamper.symonmuchemi.com
 sudo tee /etc/nginx/sites-available/devcamper <<EOF
 server {
