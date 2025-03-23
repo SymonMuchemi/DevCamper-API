@@ -17,12 +17,16 @@ exports.register = asyncHandler(async (req, res, next) => {
     role,
   });
 
-  const token = user.getSignedJwtToken();
+  const message = `Hello ${user.name},
 
-  res.status(200).json({
-    success: true,
-    token,
-  });
+  Thank you for registering at DevCamper. Your account has been successfully created.
+
+  Best regards,
+  The DevCamper Team`;
+
+  await redisClient.writeToMailStream(user.email, 'Registration Successful', message);
+
+  sendTokenResponse(user, 200, res);
 });
 
 // @desc    login a new user
@@ -47,7 +51,6 @@ exports.login = asyncHandler(async (req, res, next) => {
 
   // check if password matches
   const isMatch = await user.matchPassword(password);
-  console.log(`Password match: ${isMatch}`);
 
   if (!isMatch) {
     return next(new ErrorResponse('Invalid credentials', 401));
