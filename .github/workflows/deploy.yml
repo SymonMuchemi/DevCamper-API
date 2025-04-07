@@ -36,4 +36,4 @@ jobs:
             - name: Build and start containers
               run: |
                 cd $DEPLOY_PATH
-                sudo docker-compose up --build -d
+                sudo docker compose up --build -d
