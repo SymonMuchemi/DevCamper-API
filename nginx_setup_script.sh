@@ -37,13 +37,7 @@ sudo systemctl restart nginx
 # Step 6: Install Certbot and obtain an SSL certificate
 sudo apt install certbot python3-certbot-nginx -y
 
-sudo certbot --nginx -d devcamper.symonmuchemi.com -d www.devcamper.symonmuchemi.com --agree-tos --redirect --non-interactive -m muchemi.developer.com
+sudo certbot --nginx -d devcamper.symonmuchemi.com --agree-tos --redirect --non-interactive -m muchemi.developer.com
 
 # Step 7: Ensure Certbot auto-renews the certificate
 sudo systemctl enable certbot.timer
-
-# Step 8: Verify HTTPS is working
-curl -I https://devcamper.symonmuchemi.com
-
-# Step 8: Verify HTTPS is working
-curl -I https://www.devcamper.symonmuchemi.com
